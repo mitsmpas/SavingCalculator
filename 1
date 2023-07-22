@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Savings Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f1f1f1;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        #calculator-container {
+            width: 300px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            display: block;
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            font-size: 16px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        #calculateButton {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 15px;
+        }
+
+        #calculateButton:hover {
+            background-color: #45a049;
+        }
+
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: center;
+            border: 1px solid #000;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        /* Hide the output page initially */
+        #outputPage {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <h1>Savings Calculator</h1>
+    <div id="inputPage">
+        <div id="calculator-container">
+            <label for="initialAmount">Enter the initial savings amount:</label>
+            <input type="number" id="initialAmount" />
+            <button id="calculateButton" onclick="calculateSavings()">Calculate</button>
+        </div>
+    </div>
+
+    <div id="outputPage">
+        <h1>Savings Calculator - Results</h1>
+        <table id="output">
+            <tr>
+                <th>Week #</th>
+                <th>Saving amount</th>
+                <th>Saved amount so far</th>
+            </tr>
+        </table>
+    </div>
+
+    <script>
+        function calculateSavings() {
+            // Initialize variables
+            const totalAmount = [];
+            const amount = parseInt(document.getElementById('initialAmount').value, 10);
+            let total = amount;
+            let weeks = 0;
+            let totalAm = 0;
+
+            // Get the table element
+            const outputTable = document.getElementById('output');
+            // Clear the table body before each calculation
+            outputTable.innerHTML = '<tr><th>Week #</th><th>Saving amount</th><th>Saved amount so far</th></tr>';
+
+            for (let week = 1; week <= 52; week++) {
+                weeks++;
+                // Create a new row
+                const newRow = outputTable.insertRow();
+                // Create cells for the new row
+                const weekCell = newRow.insertCell();
+                const savingAmountCell = newRow.insertCell();
+                const savedAmountCell = newRow.insertCell();
+
+                // Fill in the cells with data
+                weekCell.innerText = weeks;
+                savingAmountCell.innerText = total;
+                total += amount;
+
+                if (totalAmount.length > 0) {
+                    const previousElement = totalAmount[totalAmount.length - 1];
+                    const sumResult = previousElement + amount;
+                    totalAmount.push(sumResult);
+                } else {
+                    totalAmount.push(amount);
+                }
+
+                let final = 0;
+                for (let i = 0; i < totalAmount.length; i++) {
+                    final += totalAmount[i];
+                }
+
+                savedAmountCell.innerText = final;
+                totalAm += totalAmount[week - 1];
+            }
+            // Show the outputPage and hide the inputPage
+            document.getElementById('inputPage').style.display = 'none';
+            document.getElementById('outputPage').style.display = 'block';
+        }
+    </script>
+</body>
+</html>
